@@ -1,36 +1,24 @@
-/* Black & White Theme */
 body {
     font-family: Arial, sans-serif;
     text-align: center;
     margin: 50px;
-    background-color: black;
-    color: white;
 }
 
-input, button {
+input {
     padding: 10px;
     font-size: 16px;
-    background-color: #333;
+}
+
+button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: blue;
     color: white;
     border: none;
     cursor: pointer;
 }
 
-input {
-    width: 250px;
-    margin-bottom: 10px;
-}
-
-button {
-    margin-top: 10px;
-}
-
 #stock-price {
     margin-top: 20px;
     font-size: 20px;
-}
-
-/* Button Hover Effect */
-button:hover {
-    background-color: #555;
 }
