@@ -12,14 +12,20 @@ async function getStockData() {
     try {
         const response = await fetch(url);
         const data = await response.json();
+        
+        // Log the full response for debugging
+        console.log(data);
 
-        if (data["Time Series (Daily)"]) {
+        // Check for API limit or invalid symbol error
+        if (data["Error Message"]) {
+            document.getElementById("stock-price").innerText = "Invalid stock symbol or API limit reached!";
+        } else if (data["Time Series (Daily)"]) {
             const stockData = data["Time Series (Daily)"];
             const latestDate = Object.keys(stockData)[0];
             const latestPrice = stockData[latestDate]["4. close"];
             document.getElementById("stock-price").innerText = `${symbol}: $${latestPrice}`;
         } else {
-            document.getElementById("stock-price").innerText = "Invalid stock symbol or API limit reached!";
+            document.getElementById("stock-price").innerText = "Error retrieving stock data.";
         }
     } catch (error) {
         console.error("Error fetching stock data:", error);
