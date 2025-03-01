@@ -1,28 +1,21 @@
-/* Global Theme - Black and White */
 body {
     font-family: Arial, sans-serif;
     text-align: center;
     margin: 50px;
-    background-color: black;
-    color: white;
-}
-
-input, button {
-    padding: 10px;
-    font-size: 16px;
-    background-color: #333;
-    color: white;
-    border: none;
-    cursor: pointer;
 }
 
 input {
-    width: 250px;
-    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
 }
 
 button {
-    margin-top: 10px;
+    padding: 10px;
+    font-size: 16px;
+    background-color: blue;
+    color: white;
+    border: none;
+    cursor: pointer;
 }
 
 #stock-price {
@@ -30,38 +23,27 @@ button {
     font-size: 20px;
 }
 
-/* News Section on Left */
+/* News Section Styling */
 #news-container {
     margin-top: 30px;
     text-align: left;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
 }
 
-/* News Item Styling */
 .news-item {
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid #ddd;
     padding: 10px;
     margin-bottom: 10px;
-    background-color: #222;
-    width: 100%; /* Ensure it fills the container */
 }
 
 .news-item h3 {
-    font-size: 1em; /* Smaller font size for titles */
-    margin: 0;
-    overflow: hidden; /* Prevents overflow */
-    white-space: nowrap; /* Prevents wrapping */
-    text-overflow: ellipsis; /* Adds ... if title is too long */
-    width: 100%;
+    font-size: 1.2em;
 }
 
 .news-item a {
-    color: #00bfff;
+    color: #007bff;
     text-decoration: none;
 }
 
@@ -71,16 +53,10 @@ button {
 
 .news-item p {
     font-size: 14px;
-    color: #bbb;
-    margin: 5px 0;
+    color: #333;
 }
 
 .news-item small {
     font-size: 12px;
-    color: #888;
-}
-
-/* Button Hover Effect */
-button:hover {
-    background-color: #555;
+    color: #666;
 }
