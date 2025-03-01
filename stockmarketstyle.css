@@ -1,0 +1,24 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 50px;
+}
+
+input {
+    padding: 10px;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: blue;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#stock-price {
+    margin-top: 20px;
+    font-size: 20px;
+}
