@@ -35,8 +35,11 @@ button {
     margin-top: 30px;
     text-align: left;
     max-width: 600px;
-    margin-left: 10px;
+    margin-left: auto;
     margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 /* News Item Styling */
@@ -45,6 +48,7 @@ button {
     padding: 10px;
     margin-bottom: 10px;
     background-color: #222;
+    width: 100%; /* Ensure it fills the container */
 }
 
 .news-item h3 {
@@ -53,7 +57,7 @@ button {
     overflow: hidden; /* Prevents overflow */
     white-space: nowrap; /* Prevents wrapping */
     text-overflow: ellipsis; /* Adds ... if title is too long */
-    width: 100%; /* Ensure it doesn't exceed container width */
+    width: 100%;
 }
 
 .news-item a {
