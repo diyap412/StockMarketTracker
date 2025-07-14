@@ -1,102 +1,77 @@
-* {
-  box-sizing: border-box;
+body {
+  background-color: #f0f4fb;
+  color: #1c2a44;
+  font-family: 'Poppins', sans-serif;
   margin: 0;
   padding: 0;
 }
 
-body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #f4f6f8;
-  color: #1f2937;
-  padding: 0;
-}
-
 header {
-  background-color: #1e293b;
-  color: white;
+  background-color: #162f4d;
   padding: 2rem 1rem;
   text-align: center;
+  color: white;
 }
 
-header h1 {
-  font-size: 1.8rem;
+h1 {
+  font-size: 2.2rem;
   margin-bottom: 1rem;
 }
 
-.centered-search {
+.input-group {
   display: flex;
   justify-content: center;
-  gap: 0.5rem;
   flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
-.centered-search input {
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  border: none;
+input[type="text"] {
+  padding: 0.6rem 1rem;
   font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   width: 250px;
 }
 
-.centered-search button {
-  background-color: #3b82f6;
+button {
+  background-color: #2563eb;
   color: white;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
   border: none;
-  padding: 0.5rem 1rem;
   border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.centered-search button:hover {
-  background-color: #2563eb;
+button:hover {
+  background-color: #1e40af;
 }
 
 main {
-  padding: 2rem;
   max-width: 900px;
-  margin: 0 auto;
+  margin: 3rem auto;
+  padding: 0 1rem;
+  text-align: center;
 }
 
-.stock-info {
-  background-color: white;
-  padding: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  margin-bottom: 1.5rem;
-  font-size: 1.1rem;
-}
-
-.chart-container {
-  background-color: white;
-  padding: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+#stock-price {
+  font-size: 1.2rem;
   margin-bottom: 2rem;
+  color: #1e293b;
 }
 
 canvas {
-  width: 100% !important;
-  height: 300px !important;
+  width: 100%;
+  height: auto;
 }
 
-.news-feed h2 {
-  margin-bottom: 1rem;
-}
-
-#news-list {
-  display: grid;
-  gap: 1rem;
-}
-
-#news-list div {
-  background-color: white;
-  padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
-}
-
-#news-list a {
-  color: #2563eb;
-  text-decoration: none;
-  font-weight: bold;
+footer {
+  background-color: #f0f4fb;
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-top: 3rem;
 }
