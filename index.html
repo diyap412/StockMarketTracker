@@ -2,34 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Stock Market Tracker</title>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <header>
-  <h1>📈 Stock Market Tracker</h1>
-  <div class="centered-search">
-    <input type="text" id="stock-symbol" placeholder="Enter stock symbol (e.g., AAPL)">
-    <button onclick="getStockData()"><i class="fas fa-search"></i></button>
+  <div class="container">
+    <h1>Stock Market Tracker</h1>
+    <div class="search-box">
+      <input type="text" id="stock-symbol" placeholder="Enter stock symbol (e.g., AAPL)" />
+      <button onclick="getStockData()">Get Data</button>
+    </div>
+    <div id="stock-price"></div>
+    <canvas id="stockChart"></canvas>
   </div>
-</header>
-
-  <main>
-    <section class="stock-info" id="stock-price"></section>
-
-    <section class="chart-container">
-      <canvas id="stockChart"></canvas>
-    </section>
-
-    <section class="news-feed">
-      <h2>Related News</h2>
-      <div id="news-list"></div>
-    </section>
-  </main>
-
   <script src="script.js"></script>
 </body>
 </html>
