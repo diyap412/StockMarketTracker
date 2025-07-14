@@ -1,77 +1,107 @@
-body {
-  background-color: #f0f4fb;
-  color: #1c2a44;
-  font-family: 'Poppins', sans-serif;
+/* === Reset and base styles === */
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f4f6f8;
+  color: #1f2937;
+  padding: 0;
+}
+
+/* === Header Styles === */
 header {
-  background-color: #162f4d;
-  padding: 2rem 1rem;
-  text-align: center;
+  background-color: #1e293b;
   color: white;
-}
-
-h1 {
-  font-size: 2.2rem;
-  margin-bottom: 1rem;
-}
-
-.input-group {
+  padding: 1rem 2rem;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 1rem;
 }
 
-input[type="text"] {
-  padding: 0.6rem 1rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
+header h1 {
+  font-size: 1.5rem;
+}
+
+.search-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.search-bar input {
+  padding: 0.5rem 1rem;
   border-radius: 6px;
-  width: 250px;
+  border: none;
+  font-size: 1rem;
+  width: 200px;
 }
 
-button {
-  background-color: #2563eb;
+.search-bar button {
+  background-color: #3b82f6;
   color: white;
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
   border: none;
+  padding: 0.5rem 1rem;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-button:hover {
-  background-color: #1e40af;
+.search-bar button:hover {
+  background-color: #2563eb;
 }
 
+/* === Main Content === */
 main {
+  padding: 2rem;
   max-width: 900px;
-  margin: 3rem auto;
-  padding: 0 1rem;
-  text-align: center;
+  margin: 0 auto;
 }
 
-#stock-price {
-  font-size: 1.2rem;
+.stock-info {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.chart-container {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   margin-bottom: 2rem;
-  color: #1e293b;
 }
 
 canvas {
-  width: 100%;
-  height: auto;
+  width: 100% !important;
+  height: 300px !important;
 }
 
-footer {
-  background-color: #f0f4fb;
-  text-align: center;
-  padding: 1.5rem;
-  font-size: 0.9rem;
-  color: #64748b;
-  margin-top: 3rem;
+/* === News Feed === */
+.news-feed h2 {
+  margin-bottom: 1rem;
+}
+
+#news-list {
+  display: grid;
+  gap: 1rem;
+}
+
+#news-list div {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+}
+
+#news-list a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: bold;
 }
