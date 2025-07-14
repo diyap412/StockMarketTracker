@@ -23,25 +23,22 @@ header h1 {
   margin-bottom: 1rem;
 }
 
-header h1 {
-  font-size: 1.5rem;
-}
-
-.search-bar {
+.centered-search {
   display: flex;
+  justify-content: center;
   gap: 0.5rem;
-  margin-top: 0.5rem;
+  flex-wrap: wrap;
 }
 
-.search-bar input {
+.centered-search input {
   padding: 0.5rem 1rem;
   border-radius: 6px;
   border: none;
   font-size: 1rem;
-  width: 200px;
+  width: 250px;
 }
 
-.search-bar button {
+.centered-search button {
   background-color: #3b82f6;
   color: white;
   border: none;
@@ -50,7 +47,7 @@ header h1 {
   cursor: pointer;
 }
 
-.search-bar button:hover {
+.centered-search button:hover {
   background-color: #2563eb;
 }
 
