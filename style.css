@@ -1,3 +1,4 @@
+/* === Reset and base styles === */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -5,12 +6,13 @@
 }
 
 body {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Poppins', sans-serif;
   background-color: #f4f6f8;
   color: #1f2937;
   padding: 0;
 }
 
+/* === Header Styles === */
 header {
   background-color: #1e293b;
   color: white;
@@ -52,6 +54,7 @@ header h1 {
   background-color: #2563eb;
 }
 
+/* === Main Content === */
 main {
   padding: 2rem;
   max-width: 900px;
@@ -80,6 +83,7 @@ canvas {
   height: 300px !important;
 }
 
+/* === News Feed === */
 .news-feed h2 {
   margin-bottom: 1rem;
 }
