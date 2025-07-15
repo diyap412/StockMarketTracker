@@ -88,3 +88,10 @@ async function loadNews(symbol) {
     console.error(err);
   }
 }
+
+// Add Enter key support for search input
+document.getElementById('stock-symbol').addEventListener('keydown', function(event) {
+  if (event.key === 'Enter') {
+    getStockData();
+  }
+});
