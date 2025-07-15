@@ -63,41 +63,5 @@ main {
   padding: 1rem;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  margin-bottom: 1.5rem;
   font-size: 1.1rem;
-}
-
-.chart-container {
-  background-color: white;
-  padding: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  margin-bottom: 2rem;
-}
-
-canvas {
-  width: 100% !important;
-  height: 300px !important;
-}
-
-.news-feed h2 {
-  margin-bottom: 1rem;
-}
-
-#news-list {
-  display: grid;
-  gap: 1rem;
-}
-
-#news-list div {
-  background-color: white;
-  padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
-}
-
-#news-list a {
-  color: #2563eb;
-  text-decoration: none;
-  font-weight: bold;
 }
