@@ -8,6 +8,21 @@ async function getStockData() {
     return;
   }
 
+  output.innerText = "Loading...";
+
+  const cacheKey = `stockData_${symbol}`;
+  const cached = localStorage.getItem(cacheKey);
+  const now = Date.now();
+
+  if (cached) {
+    const parsed = JSON.parse(cached);
+    const isFresh = now - parsed.timestamp < 60 * 1000;
+    if (isFresh) {
+      renderStock(parsed.data, symbol, output);
+      return;
+    }
+  }
+
   const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${apiKey}`;
 
   try {
@@ -15,7 +30,11 @@ async function getStockData() {
     const data = await response.json();
 
     if (data.Note) {
-      output.innerText = "API limit reached. Please wait and try again.";
+      output.innerText = "API limit reached. Showing recent cached data if available.";
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        renderStock(parsed.data, symbol, output);
+      }
       return;
     }
 
@@ -24,14 +43,19 @@ async function getStockData() {
       return;
     }
 
-    const timeSeries = data["Time Series (Daily)"];
-    const latestDate = Object.keys(timeSeries)[0];
-    const latestData = timeSeries[latestDate];
-    const close = parseFloat(latestData["4. close"]).toFixed(2);
-
-    output.innerText = `${symbol} closing price on ${latestDate}: $${close}`;
+    localStorage.setItem(cacheKey, JSON.stringify({ data, timestamp: now }));
+    renderStock(data, symbol, output);
   } catch (error) {
-    output.innerText = "Error fetching data. Try again.";
+    output.innerText = "Error fetching data. Try again later.";
     console.error(error);
   }
+}
+
+function renderStock(data, symbol, output) {
+  const timeSeries = data["Time Series (Daily)"];
+  const latestDate = Object.keys(timeSeries)[0];
+  const latestData = timeSeries[latestDate];
+  const close = parseFloat(latestData["4. close"]).toFixed(2);
+
+  output.innerText = `${symbol} closing price on ${latestDate}: $${close}`;
 }
