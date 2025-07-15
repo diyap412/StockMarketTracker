@@ -1,48 +1,35 @@
-/* === Reset and base styles === */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 body {
   font-family: 'Space Grotesk', sans-serif;
   background-color: #f4f6f8;
   color: #1f2937;
+  margin: 0;
   padding: 0;
 }
 
-/* === Header Styles === */
 header {
   background-color: #1e293b;
   color: white;
-  padding: 1rem 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
+  padding: 1.5rem 2rem;
+  text-align: center;
 }
 
 header h1 {
-  font-weight: 700;
-  font-size: 1.8rem;
-  user-select: none;
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }
 
 .centered-search {
-  display: flex;
+  display: inline-flex;
   gap: 0.5rem;
-  justify-content: center;
-  width: 100%;
-  max-width: 400px;
 }
 
 .centered-search input {
-  flex: 1;
   padding: 0.5rem 1rem;
   border-radius: 6px;
   border: none;
   font-size: 1rem;
+  width: 220px;
+  max-width: 90vw;
 }
 
 .centered-search button {
@@ -52,74 +39,29 @@ header h1 {
   padding: 0.5rem 1rem;
   border-radius: 6px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  transition: background-color 0.3s ease;
 }
 
 .centered-search button:hover {
   background-color: #2563eb;
 }
 
-/* === Main Content === */
-main {
-  padding: 2rem;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.stock-info {
-  background-color: white;
-  padding: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  margin-bottom: 1.5rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  user-select: none;
-}
-
-.chart-container {
-  background-color: white;
-  padding: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  margin-bottom: 2rem;
-}
-
-canvas {
-  width: 100% !important;
-  height: 300px !important;
-}
-
-/* === News Feed === */
-.news-feed h2 {
-  margin-bottom: 1rem;
-  font-weight: 700;
-  color: #1e293b;
-  user-select: none;
-}
-
-#news-list {
-  display: grid;
-  gap: 1rem;
-}
-
-#news-list div {
-  background-color: white;
-  padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
-  font-weight: 500;
-}
-
-#news-list a {
-  color: #2563eb;
-  text-decoration: none;
-  font-weight: 600;
-  user-select: text;
-}
-
-#news-list a:hover {
-  text-decoration: underline;
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .centered-search {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .centered-search input, .centered-search button {
+    width: 100%;
+    max-width: 320px;
+  }
+  
+  .centered-search button {
+    margin-top: 0.5rem;
+  }
 }
