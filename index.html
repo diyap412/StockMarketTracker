@@ -2,20 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Stock Market Tracker</title>
-  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <header>
-  <h1>📈 Stock Market Tracker</h1>
-  <div class="centered-search">
-    <input type="text" id="stock-symbol" placeholder="Enter stock symbol (e.g., AAPL)">
-    <button onclick="getStockData()"><i class="fas fa-search"></i></button>
-  </div>
-</header>
+    <h1>📈 Stock Market Tracker</h1>
+    <div class="centered-search">
+      <input type="text" id="stock-symbol" placeholder="Enter stock symbol (e.g., AAPL)" />
+      <button onclick="getStockData()"><i class="fas fa-search"></i></button>
+    </div>
+  </header>
 
   <main>
     <section class="stock-info" id="stock-price"></section>
