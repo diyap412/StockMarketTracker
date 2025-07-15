@@ -1,137 +1,101 @@
-const mockStockData = {
-  AAPL: {
-    price: 174.55,
-    date: "2025-07-14",
-    history: [
-      { date: "2025-07-08", close: 169.10 },
-      { date: "2025-07-09", close: 171.30 },
-      { date: "2025-07-10", close: 172.00 },
-      { date: "2025-07-11", close: 173.50 },
-      { date: "2025-07-14", close: 174.55 },
-    ],
-    news: [
-      { title: "Apple announces new iPhone release date", url: "#" },
-      { title: "Apple stock hits new all-time high", url: "#" },
-      { title: "Experts discuss Apple's market strategy", url: "#" },
-    ],
-  },
-  TSLA: {
-    price: 689.12,
-    date: "2025-07-14",
-    history: [
-      { date: "2025-07-08", close: 670.00 },
-      { date: "2025-07-09", close: 675.50 },
-      { date: "2025-07-10", close: 680.00 },
-      { date: "2025-07-11", close: 685.00 },
-      { date: "2025-07-14", close: 689.12 },
-    ],
-    news: [
-      { title: "Tesla announces new battery tech", url: "#" },
-      { title: "Tesla's Model Y sales increase", url: "#" },
-      { title: "Elon Musk tweets about future plans", url: "#" },
-    ],
-  },
-  MSFT: {
-    price: 305.20,
-    date: "2025-07-14",
-    history: [
-      { date: "2025-07-08", close: 300.00 },
-      { date: "2025-07-09", close: 301.50 },
-      { date: "2025-07-10", close: 303.00 },
-      { date: "2025-07-11", close: 304.00 },
-      { date: "2025-07-14", close: 305.20 },
-    ],
-    news: [
-      { title: "Microsoft launches new cloud service", url: "#" },
-      { title: "Microsoft stock steady amid market changes", url: "#" },
-      { title: "Windows 12 rumors spread", url: "#" },
-    ],
-  },
-};
+const API_KEY = 'YOUR_ALPHA_VANTAGE_API_KEY'; // Replace with your real API key
 
-let chart;
+const stockInfoDiv = document.getElementById('stock-price');
+const newsList = document.getElementById('news-list');
+let stockChart; // Chart instance
 
 function getStockData() {
-  const input = document.getElementById("stock-symbol");
-  const symbol = input.value.toUpperCase().trim();
-  const output = document.getElementById("stock-price");
-  const newsList = document.getElementById("news-list");
+  const symbol = document.getElementById('stock-symbol').value.trim().toUpperCase();
+  if (!symbol) return;
 
-  if (!symbol) {
-    output.innerText = "Please enter a stock symbol.";
-    newsList.innerHTML = "";
-    if (chart) chart.destroy();
+  fetchStockPrice(symbol);
+  fetchStockHistory(symbol);
+  fetchStockNews(symbol);
+}
+
+async function fetchStockPrice(symbol) {
+  const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  const quote = data["Global Quote"];
+
+  if (!quote || !quote["05. price"]) {
+    stockInfoDiv.innerHTML = `<p>Stock not found or API limit reached.</p>`;
     return;
   }
 
-  if (!mockStockData[symbol]) {
-    output.innerText = "Stock not found. Please check the symbol.";
-    newsList.innerHTML = "";
-    if (chart) chart.destroy();
-    return;
-  }
+  const price = parseFloat(quote["05. price"]).toFixed(2);
+  const change = quote["10. change percent"];
+  const lastDay = quote["07. latest trading day"];
 
-  const data = mockStockData[symbol];
+  stockInfoDiv.innerHTML = `
+    <h2>${symbol}</h2>
+    <p><strong>Price:</strong> $${price}</p>
+    <p><strong>Change:</strong> ${change}</p>
+    <p><strong>Last Updated:</strong> ${lastDay}</p>
+  `;
+}
 
-  output.innerText = `${symbol} closing price on ${data.date}: $${data.price.toFixed(2)}`;
+async function fetchStockHistory(symbol) {
+  const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${API_KEY}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  const series = data["Time Series (Daily)"];
+
+  if (!series) return;
+
+  const dates = Object.keys(series).slice(0, 7).reverse(); // latest 7 days
+  const prices = dates.map(date => parseFloat(series[date]["4. close"]));
+
+  if (stockChart) stockChart.destroy();
 
   const ctx = document.getElementById("stockChart").getContext("2d");
-  const labels = data.history.map((h) => h.date);
-  const prices = data.history.map((h) => h.close);
-
-  if (chart) chart.destroy();
-
-  chart = new Chart(ctx, {
-    type: "line",
+  stockChart = new Chart(ctx, {
+    type: 'line',
     data: {
-      labels,
-      datasets: [
-        {
-          label: `${symbol} Closing Price`,
-          data: prices,
-          borderColor: "#3b82f6",
-          backgroundColor: "rgba(59,130,246,0.2)",
-          fill: true,
-          tension: 0.3,
-          pointRadius: 3,
-          pointHoverRadius: 6,
-          borderWidth: 2,
-        },
-      ],
+      labels: dates,
+      datasets: [{
+        label: `${symbol} Price`,
+        data: prices,
+        borderColor: "#3b82f6",
+        borderWidth: 2,
+        fill: false,
+        tension: 0.3
+      }]
     },
     options: {
       responsive: true,
+      plugins: {
+        legend: { display: false }
+      },
       scales: {
         y: {
-          beginAtZero: false,
-          ticks: {
-            callback: (val) => `$${val.toFixed(2)}`,
-          },
-        },
-      },
-      interaction: {
-        mode: "nearest",
-        intersect: false,
-      },
-      plugins: {
-        legend: {
-          labels: {
-            font: { family: "'Space Grotesk', sans-serif", size: 14, weight: "600" },
-          },
-        },
-        tooltip: {
-          callbacks: {
-            label: (ctx) => `$${ctx.parsed.y.toFixed(2)}`,
-          },
-        },
-      },
-    },
+          beginAtZero: false
+        }
+      }
+    }
   });
+}
 
-  newsList.innerHTML = "";
-  data.news.forEach((article) => {
-    const div = document.createElement("div");
-    div.innerHTML = `<a href="${article.url}" target="_blank" rel="noopener noreferrer">${article.title}</a>`;
-    newsList.appendChild(div);
+async function fetchStockNews(symbol) {
+  const url = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${symbol}&apikey=${API_KEY}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  const articles = data.feed;
+
+  newsList.innerHTML = '';
+
+  if (!articles || articles.length === 0) {
+    newsList.innerHTML = '<p>No news available or API limit hit.</p>';
+    return;
+  }
+
+  articles.slice(0, 5).forEach(article => {
+    const newsItem = document.createElement('div');
+    newsItem.innerHTML = `
+      <p><strong>${article.title}</strong></p>
+      <a href="${article.url}" target="_blank">Read more</a>
+    `;
+    newsList.appendChild(newsItem);
   });
 }
