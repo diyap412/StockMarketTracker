@@ -26,21 +26,32 @@ header {
   border: 1px solid #ccc;
   border-right: none;
   border-radius: 5px 0 0 5px;
+  outline: none;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.centered-search input:focus {
+  box-shadow: 0 0 5px rgba(30, 136, 229, 0.6);
+  border-color: #1e88e5;
 }
 
 .centered-search button {
   padding: 0.5rem 1rem;
   font-size: 1rem;
-  background-color: #1e1e2f;
+  background-color: #2e3b55;
   color: white;
   border: 1px solid #ccc;
   border-radius: 0 5px 5px 0;
   cursor: pointer;
+  margin-left: 5px;
   transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .centered-search button:hover {
-  background-color: #33364d;
+  background-color: #405173;
 }
 
 main {
