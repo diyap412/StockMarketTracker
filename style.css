@@ -1,33 +1,26 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   background-color: #f4f6f8;
   color: #1f2937;
+  margin: 0;
   padding: 0;
 }
 
 header {
   background-color: #1e293b;
   color: white;
-  padding: 2rem 1rem;
+  padding: 1.5rem 2rem;
   text-align: center;
 }
 
 header h1 {
-  font-size: 1.8rem;
+  font-size: 2rem;
   margin-bottom: 1rem;
 }
 
 .centered-search {
-  display: flex;
-  justify-content: center;
+  display: inline-flex;
   gap: 0.5rem;
-  flex-wrap: wrap;
 }
 
 .centered-search input {
@@ -35,7 +28,8 @@ header h1 {
   border-radius: 6px;
   border: none;
   font-size: 1rem;
-  width: 250px;
+  width: 220px;
+  max-width: 90vw;
 }
 
 .centered-search button {
@@ -45,58 +39,29 @@ header h1 {
   padding: 0.5rem 1rem;
   border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .centered-search button:hover {
   background-color: #2563eb;
 }
 
-main {
-  padding: 2rem;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.stock-info {
-  background-color: white;
-  padding: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  margin-bottom: 1.5rem;
-  font-size: 1.1rem;
-}
-
-.chart-container {
-  background-color: white;
-  padding: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  margin-bottom: 2rem;
-}
-
-canvas {
-  width: 100% !important;
-  height: 300px !important;
-}
-
-.news-feed h2 {
-  margin-bottom: 1rem;
-}
-
-#news-list {
-  display: grid;
-  gap: 1rem;
-}
-
-#news-list div {
-  background-color: white;
-  padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
-}
-
-#news-list a {
-  color: #2563eb;
-  text-decoration: none;
-  font-weight: bold;
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .centered-search {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .centered-search input, .centered-search button {
+    width: 100%;
+    max-width: 320px;
+  }
+  
+  .centered-search button {
+    margin-top: 0.5rem;
+  }
 }
