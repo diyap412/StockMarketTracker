@@ -59,7 +59,7 @@ header h1 {
   padding: 10px 16px;
   border: none;
   border-radius: 20px;
-  background-color: #00b894;
+  background-color: #1e293b;
   color: white;
   font-size: 16px;
   cursor: pointer;
@@ -68,7 +68,7 @@ header h1 {
 }
 
 .search-button:hover {
-  background-color: #019875;
+  background-color: #334155;
 }
 
 .search-button i {
