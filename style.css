@@ -19,7 +19,8 @@ header h1 {
 }
 
 .centered-search {
-  display: inline-flex;
+  display: flex;
+  justify-content: center;
   gap: 0.5rem;
 }
 
@@ -44,6 +45,46 @@ header h1 {
 
 .centered-search button:hover {
   background-color: #2563eb;
+}
+
+main {
+  max-width: 900px;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+}
+
+.stock-info {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.chart-container {
+  max-width: 100%;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+#stockChart {
+  max-width: 100%;
+  width: 100%;
+  height: 400px;
+  display: block;
+}
+
+.news-feed {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+}
+
+.news-feed h2 {
+  margin-bottom: 1rem;
+  font-weight: 600;
 }
 
 @media (max-width: 480px) {
