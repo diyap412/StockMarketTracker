@@ -14,25 +14,43 @@ function getStockData() {
 
 async function fetchStockPrice(symbol) {
   const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  const quote = data["Global Quote"];
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      stockInfoDiv.innerHTML = `<p>Error fetching data. Please try again later.</p>`;
+      return;
+    }
+    const data = await res.json();
 
-  if (!quote || !quote["05. price"]) {
-    stockInfoDiv.innerHTML = `<p>Stock not found or API limit reached.</p>`;
-    return;
+    if (!data || !data["Global Quote"] || Object.keys(data["Global Quote"]).length === 0) {
+      if (data.Note) {
+        stockInfoDiv.innerHTML = `<p>API call limit reached. Please wait and try again later.</p>`;
+      } else {
+        stockInfoDiv.innerHTML = `<p>Invalid stock symbol. Please check and try again.</p>`;
+      }
+      return;
+    }
+
+    const quote = data["Global Quote"];
+    const price = parseFloat(quote["05. price"]);
+    if (isNaN(price)) {
+      stockInfoDiv.innerHTML = `<p>Invalid stock symbol or no price data available.</p>`;
+      return;
+    }
+
+    const change = quote["10. change percent"];
+    const lastDay = quote["07. latest trading day"];
+
+    stockInfoDiv.innerHTML = `
+      <h2>${symbol}</h2>
+      <p><strong>Price:</strong> $${price.toFixed(2)}</p>
+      <p><strong>Change:</strong> ${change}</p>
+      <p><strong>Last Updated:</strong> ${lastDay}</p>
+    `;
+  } catch (error) {
+    console.error('Fetch error:', error);
+    stockInfoDiv.innerHTML = `<p>Failed to fetch stock data. Please try again later.</p>`;
   }
-
-  const price = parseFloat(quote["05. price"]).toFixed(2);
-  const change = quote["10. change percent"];
-  const lastDay = quote["07. latest trading day"];
-
-  stockInfoDiv.innerHTML = `
-    <h2>${symbol}</h2>
-    <p><strong>Price:</strong> $${price}</p>
-    <p><strong>Change:</strong> ${change}</p>
-    <p><strong>Last Updated:</strong> ${lastDay}</p>
-  `;
 }
 
 async function fetchStockHistory(symbol) {
