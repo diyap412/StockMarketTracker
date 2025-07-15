@@ -56,31 +56,29 @@ header h1 {
 }
 
 .search-button {
-  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  height: 40px;
+  width: 40px;
   border: none;
-  border-radius: 20px;
+  border-radius: 50%;
   background-color: #f4f6f8;
-  color: #1f2937; /* dark text for contrast */
-  font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   flex-shrink: 0;
 }
 
 .search-button:hover {
-  background-color: #d9dde1; 
-}
-
-.search-button i {
-  pointer-events: none;
+  background-color: #d9dde1;
 }
 
 .search-button img.search-icon {
-  width: 20px;   /* or size you want */
-  height: 20px;
+  width: 18px;
+  height: 18px;
   object-fit: contain;
-  pointer-events: none; /* so clicks go to the button */  /* remove this chunk if it doesn't work!!! */
-  vertical-align: middle;
+  pointer-events: none;
 }
 
 main {
@@ -93,7 +91,7 @@ main {
   background-color: white;
   padding: 1rem;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   margin-bottom: 1.5rem;
   font-size: 1.1rem;
 }
@@ -102,7 +100,7 @@ main {
   background-color: white;
   padding: 1rem;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   margin-bottom: 2rem;
 }
 
@@ -124,7 +122,7 @@ canvas {
   background-color: white;
   padding: 1rem;
   border-radius: 10px;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
 }
 
 #news-list a {
