@@ -1,101 +1,90 @@
-const API_KEY = 'YOUR_ALPHA_VANTAGE_API_KEY'; // Replace with your real API key
+const apiKey = "W1CUJ9AZPBL2DTFN"; // Replace with your Alpha Vantage API key
 
-const stockInfoDiv = document.getElementById('stock-price');
-const newsList = document.getElementById('news-list');
-let stockChart; // Chart instance
-
-function getStockData() {
-  const symbol = document.getElementById('stock-symbol').value.trim().toUpperCase();
+async function getStockData() {
+  const symbol = document.getElementById("stock-symbol").value.toUpperCase().trim();
   if (!symbol) return;
 
-  fetchStockPrice(symbol);
-  fetchStockHistory(symbol);
-  fetchStockNews(symbol);
-}
+  const priceSection = document.getElementById("stock-price");
+  const chartCanvas = document.getElementById("stockChart");
+  const newsList = document.getElementById("news-list");
+  priceSection.innerHTML = "Loading...";
+  newsList.innerHTML = "";
 
-async function fetchStockPrice(symbol) {
-  const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  const quote = data["Global Quote"];
+  try {
+    const response = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${apiKey}`);
+    const data = await response.json();
+    const timeSeries = data["Time Series (Daily)"];
 
-  if (!quote || !quote["05. price"]) {
-    stockInfoDiv.innerHTML = `<p>Stock not found or API limit reached.</p>`;
-    return;
-  }
+    if (!timeSeries) {
+      priceSection.innerHTML = "Invalid symbol or API limit reached.";
+      return;
+    }
 
-  const price = parseFloat(quote["05. price"]).toFixed(2);
-  const change = quote["10. change percent"];
-  const lastDay = quote["07. latest trading day"];
+    const dates = Object.keys(timeSeries).slice(0, 10).reverse();
+    const prices = dates.map(date => parseFloat(timeSeries[date]["4. close"]));
+    const latestPrice = prices[prices.length - 1];
 
-  stockInfoDiv.innerHTML = `
-    <h2>${symbol}</h2>
-    <p><strong>Price:</strong> $${price}</p>
-    <p><strong>Change:</strong> ${change}</p>
-    <p><strong>Last Updated:</strong> ${lastDay}</p>
-  `;
-}
+    priceSection.innerHTML = `Latest Price for <strong>${symbol}</strong>: $${latestPrice.toFixed(2)}`;
 
-async function fetchStockHistory(symbol) {
-  const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${API_KEY}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  const series = data["Time Series (Daily)"];
-
-  if (!series) return;
-
-  const dates = Object.keys(series).slice(0, 7).reverse(); // latest 7 days
-  const prices = dates.map(date => parseFloat(series[date]["4. close"]));
-
-  if (stockChart) stockChart.destroy();
-
-  const ctx = document.getElementById("stockChart").getContext("2d");
-  stockChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: dates,
-      datasets: [{
-        label: `${symbol} Price`,
-        data: prices,
-        borderColor: "#3b82f6",
-        borderWidth: 2,
-        fill: false,
-        tension: 0.3
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: false }
+    if (window.myChart) window.myChart.destroy();
+    window.myChart = new Chart(chartCanvas, {
+      type: "line",
+      data: {
+        labels: dates,
+        datasets: [{
+          label: `${symbol} Closing Prices`,
+          data: prices,
+          borderColor: "#4caf50",
+          fill: false,
+          tension: 0.2,
+        }]
       },
-      scales: {
-        y: {
-          beginAtZero: false
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          x: {
+            ticks: {
+              maxTicksLimit: 5
+            }
+          }
         }
       }
-    }
-  });
+    });
+
+    loadNews(symbol);
+  } catch (err) {
+    priceSection.innerHTML = "Error loading data.";
+    console.error(err);
+  }
 }
 
-async function fetchStockNews(symbol) {
-  const url = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${symbol}&apikey=${API_KEY}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  const articles = data.feed;
+async function loadNews(symbol) {
+  const newsList = document.getElementById("news-list");
+  try {
+    const response = await fetch(`https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${symbol}&apikey=${apiKey}`);
+    const data = await response.json();
+    const articles = data.feed?.slice(0, 5) || [];
 
-  newsList.innerHTML = '';
+    if (articles.length === 0) {
+      newsList.innerHTML = "No news found.";
+      return;
+    }
 
-  if (!articles || articles.length === 0) {
-    newsList.innerHTML = '<p>No news available or API limit hit.</p>';
-    return;
+    articles.forEach(article => {
+      const link = document.createElement("a");
+      link.href = article.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = article.title;
+      newsList.appendChild(link);
+    });
+  } catch (err) {
+    newsList.innerHTML = "Error loading news.";
+    console.error(err);
   }
-
-  articles.slice(0, 5).forEach(article => {
-    const newsItem = document.createElement('div');
-    newsItem.innerHTML = `
-      <p><strong>${article.title}</strong></p>
-      <a href="${article.url}" target="_blank">Read more</a>
-    `;
-    newsList.appendChild(newsItem);
-  });
 }
