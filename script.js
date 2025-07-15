@@ -1,61 +1,148 @@
-async function getStockData() {
-  const symbol = document.getElementById("stock-symbol").value.toUpperCase().trim();
+const mockStockData = {
+  AAPL: {
+    price: 174.55,
+    date: "2025-07-14",
+    history: [
+      { date: "2025-07-08", close: 169.10 },
+      { date: "2025-07-09", close: 171.30 },
+      { date: "2025-07-10", close: 172.00 },
+      { date: "2025-07-11", close: 173.50 },
+      { date: "2025-07-14", close: 174.55 },
+    ],
+    news: [
+      { title: "Apple announces new iPhone release date", url: "#" },
+      { title: "Apple stock hits new all-time high", url: "#" },
+      { title: "Experts discuss Apple's market strategy", url: "#" },
+    ],
+  },
+  TSLA: {
+    price: 689.12,
+    date: "2025-07-14",
+    history: [
+      { date: "2025-07-08", close: 670.00 },
+      { date: "2025-07-09", close: 675.50 },
+      { date: "2025-07-10", close: 680.00 },
+      { date: "2025-07-11", close: 685.00 },
+      { date: "2025-07-14", close: 689.12 },
+    ],
+    news: [
+      { title: "Tesla announces new battery tech", url: "#" },
+      { title: "Tesla's Model Y sales increase", url: "#" },
+      { title: "Elon Musk tweets about future plans", url: "#" },
+    ],
+  },
+  MSFT: {
+    price: 305.20,
+    date: "2025-07-14",
+    history: [
+      { date: "2025-07-08", close: 300.00 },
+      { date: "2025-07-09", close: 301.50 },
+      { date: "2025-07-10", close: 303.00 },
+      { date: "2025-07-11", close: 304.00 },
+      { date: "2025-07-14", close: 305.20 },
+    ],
+    news: [
+      { title: "Microsoft launches new cloud service", url: "#" },
+      { title: "Microsoft stock steady amid market changes", url: "#" },
+      { title: "Windows 12 rumors spread", url: "#" },
+    ],
+  },
+};
+
+let chart;
+
+function getStockData() {
+  const symbolInput = document.getElementById("stock-symbol");
+  const symbol = symbolInput.value.toUpperCase().trim();
   const output = document.getElementById("stock-price");
-  const apiKey = "BNRIU890X44B58J8";
+  const newsList = document.getElementById("news-list");
 
   if (!symbol) {
     output.innerText = "Please enter a stock symbol.";
+    newsList.innerHTML = "";
     return;
   }
 
-  output.innerText = "Loading...";
-
-  const cacheKey = `stockData_${symbol}`;
-  const cached = localStorage.getItem(cacheKey);
-  const now = Date.now();
-
-  if (cached) {
-    const parsed = JSON.parse(cached);
-    const isFresh = now - parsed.timestamp < 60 * 1000;
-    if (isFresh) {
-      renderStock(parsed.data, symbol, output);
-      return;
+  if (!mockStockData[symbol]) {
+    output.innerText = "Stock not found in mock data.";
+    newsList.innerHTML = "";
+    if (chart) {
+      chart.destroy();
     }
+    return;
   }
 
-  const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${apiKey}`;
+  const data = mockStockData[symbol];
+  output.innerText = `${symbol} closing price on ${data.date}: $${data.price.toFixed(2)}`;
 
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
+  // Prepare chart data
+  const labels = data.history.map((item) => item.date);
+  const prices = data.history.map((item) => item.close);
 
-    if (data.Note) {
-      output.innerText = "API limit reached. Showing recent cached data if available.";
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        renderStock(parsed.data, symbol, output);
-      }
-      return;
-    }
+  const ctx = document.getElementById("stockChart").getContext("2d");
 
-    if (!data["Time Series (Daily)"]) {
-      output.innerText = "Stock not found. Please check the symbol.";
-      return;
-    }
-
-    localStorage.setItem(cacheKey, JSON.stringify({ data, timestamp: now }));
-    renderStock(data, symbol, output);
-  } catch (error) {
-    output.innerText = "Error fetching data. Try again later.";
-    console.error(error);
+  if (chart) {
+    chart.destroy();
   }
-}
 
-function renderStock(data, symbol, output) {
-  const timeSeries = data["Time Series (Daily)"];
-  const latestDate = Object.keys(timeSeries)[0];
-  const latestData = timeSeries[latestDate];
-  const close = parseFloat(latestData["4. close"]).toFixed(2);
+  chart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: `${symbol} Closing Price`,
+          data: prices,
+          borderColor: "#3b82f6",
+          backgroundColor: "rgba(59,130,246,0.2)",
+          fill: true,
+          tension: 0.3,
+          pointRadius: 3,
+          pointHoverRadius: 6,
+          borderWidth: 2,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: false,
+          ticks: {
+            callback: (value) => `$${value.toFixed(2)}`,
+          },
+        },
+      },
+      interaction: {
+        mode: "nearest",
+        intersect: false,
+      },
+      plugins: {
+        legend: {
+          labels: {
+            font: {
+              family: "'Space Grotesk', sans-serif",
+              size: 14,
+              weight: "600",
+            },
+          },
+        },
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              return `$${context.parsed.y.toFixed(2)}`;
+            },
+          },
+        },
+      },
+    },
+  });
 
-  output.innerText = `${symbol} closing price on ${latestDate}: $${close}`;
+  // Show news
+  newsList.innerHTML = "";
+  data.news.forEach((article) => {
+    const div = document.createElement("div");
+    div.innerHTML = `<a href="${article.url}" target="_blank">${article.title}</a>`;
+    newsList.appendChild(div);
+  });
 }
