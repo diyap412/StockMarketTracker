@@ -52,38 +52,34 @@ const mockStockData = {
 let chart;
 
 function getStockData() {
-  const symbolInput = document.getElementById("stock-symbol");
-  const symbol = symbolInput.value.toUpperCase().trim();
+  const input = document.getElementById("stock-symbol");
+  const symbol = input.value.toUpperCase().trim();
   const output = document.getElementById("stock-price");
   const newsList = document.getElementById("news-list");
 
   if (!symbol) {
     output.innerText = "Please enter a stock symbol.";
     newsList.innerHTML = "";
+    if (chart) chart.destroy();
     return;
   }
 
   if (!mockStockData[symbol]) {
-    output.innerText = "Stock not found in mock data.";
+    output.innerText = "Stock not found. Please check the symbol.";
     newsList.innerHTML = "";
-    if (chart) {
-      chart.destroy();
-    }
+    if (chart) chart.destroy();
     return;
   }
 
   const data = mockStockData[symbol];
+
   output.innerText = `${symbol} closing price on ${data.date}: $${data.price.toFixed(2)}`;
 
-  // Prepare chart data
-  const labels = data.history.map((item) => item.date);
-  const prices = data.history.map((item) => item.close);
-
   const ctx = document.getElementById("stockChart").getContext("2d");
+  const labels = data.history.map((h) => h.date);
+  const prices = data.history.map((h) => h.close);
 
-  if (chart) {
-    chart.destroy();
-  }
+  if (chart) chart.destroy();
 
   chart = new Chart(ctx, {
     type: "line",
@@ -109,7 +105,7 @@ function getStockData() {
         y: {
           beginAtZero: false,
           ticks: {
-            callback: (value) => `$${value.toFixed(2)}`,
+            callback: (val) => `$${val.toFixed(2)}`,
           },
         },
       },
@@ -120,29 +116,22 @@ function getStockData() {
       plugins: {
         legend: {
           labels: {
-            font: {
-              family: "'Space Grotesk', sans-serif",
-              size: 14,
-              weight: "600",
-            },
+            font: { family: "'Space Grotesk', sans-serif", size: 14, weight: "600" },
           },
         },
         tooltip: {
           callbacks: {
-            label: function (context) {
-              return `$${context.parsed.y.toFixed(2)}`;
-            },
+            label: (ctx) => `$${ctx.parsed.y.toFixed(2)}`,
           },
         },
       },
     },
   });
 
-  // Show news
   newsList.innerHTML = "";
   data.news.forEach((article) => {
     const div = document.createElement("div");
-    div.innerHTML = `<a href="${article.url}" target="_blank">${article.title}</a>`;
+    div.innerHTML = `<a href="${article.url}" target="_blank" rel="noopener noreferrer">${article.title}</a>`;
     newsList.appendChild(div);
   });
 }
