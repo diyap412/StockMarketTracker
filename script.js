@@ -1,101 +1,88 @@
-const API_KEY = 'YOUR_ALPHA_VANTAGE_API_KEY'; // Replace with your real API key
+const apiKey = 'YOUR_ALPHA_VANTAGE_API_KEY';
 
-const stockInfoDiv = document.getElementById('stock-price');
-const newsList = document.getElementById('news-list');
-let stockChart; // Chart instance
+const ctx = document.getElementById('stockChart').getContext('2d');
+let stockChart;
 
-function getStockData() {
+document.getElementById('search-btn').addEventListener('click', getStockData);
+document.getElementById('stock-symbol').addEventListener('keypress', e => {
+  if (e.key === 'Enter') getStockData();
+});
+
+async function getStockData() {
   const symbol = document.getElementById('stock-symbol').value.trim().toUpperCase();
   if (!symbol) return;
 
-  fetchStockPrice(symbol);
-  fetchStockHistory(symbol);
-  fetchStockNews(symbol);
-}
-
-async function fetchStockPrice(symbol) {
-  const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  const quote = data["Global Quote"];
-
-  if (!quote || !quote["05. price"]) {
-    stockInfoDiv.innerHTML = `<p>Stock not found or API limit reached.</p>`;
-    return;
-  }
-
-  const price = parseFloat(quote["05. price"]).toFixed(2);
-  const change = quote["10. change percent"];
-  const lastDay = quote["07. latest trading day"];
-
-  stockInfoDiv.innerHTML = `
-    <h2>${symbol}</h2>
-    <p><strong>Price:</strong> $${price}</p>
-    <p><strong>Change:</strong> ${change}</p>
-    <p><strong>Last Updated:</strong> ${lastDay}</p>
-  `;
-}
-
-async function fetchStockHistory(symbol) {
-  const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${API_KEY}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  const series = data["Time Series (Daily)"];
-
-  if (!series) return;
-
-  const dates = Object.keys(series).slice(0, 7).reverse(); // latest 7 days
-  const prices = dates.map(date => parseFloat(series[date]["4. close"]));
-
-  if (stockChart) stockChart.destroy();
-
-  const ctx = document.getElementById("stockChart").getContext("2d");
-  stockChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: dates,
-      datasets: [{
-        label: `${symbol} Price`,
-        data: prices,
-        borderColor: "#3b82f6",
-        borderWidth: 2,
-        fill: false,
-        tension: 0.3
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: false }
-      },
-      scales: {
-        y: {
-          beginAtZero: false
-        }
-      }
-    }
-  });
-}
-
-async function fetchStockNews(symbol) {
-  const url = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${symbol}&apikey=${API_KEY}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  const articles = data.feed;
-
+  const priceEl = document.getElementById('stock-price');
+  const newsList = document.getElementById('news-list');
+  priceEl.textContent = 'Loading...';
   newsList.innerHTML = '';
 
-  if (!articles || articles.length === 0) {
-    newsList.innerHTML = '<p>No news available or API limit hit.</p>';
-    return;
-  }
+  try {
+    const response = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${symbol}&apikey=${apiKey}`);
+    const data = await response.json();
 
-  articles.slice(0, 5).forEach(article => {
-    const newsItem = document.createElement('div');
-    newsItem.innerHTML = `
-      <p><strong>${article.title}</strong></p>
-      <a href="${article.url}" target="_blank">Read more</a>
-    `;
-    newsList.appendChild(newsItem);
-  });
+    if (data['Error Message'] || !data['Time Series (Daily)']) {
+      priceEl.textContent = 'Invalid stock symbol or API limit reached.';
+      return;
+    }
+
+    const timeSeries = data['Time Series (Daily)'];
+    const dates = Object.keys(timeSeries).slice(0, 30).reverse();
+    const prices = dates.map(date => parseFloat(timeSeries[date]['4. close']));
+
+    priceEl.textContent = `${symbol} Latest Close Price: $${prices[prices.length - 1].toFixed(2)}`;
+
+    if (stockChart) stockChart.destroy();
+    stockChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: dates,
+        datasets: [{
+          label: `${symbol} Close Price`,
+          data: prices,
+          borderColor: '#3b82f6',
+          backgroundColor: 'rgba(59,130,246,0.3)',
+          fill: true,
+          tension: 0.2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            ticks: { maxTicksLimit: 10 }
+          }
+        }
+      }
+    });
+
+    loadNews(symbol);
+  } catch {
+    priceEl.textContent = 'Failed to fetch stock data.';
+  }
+}
+
+async function loadNews(symbol) {
+  const newsList = document.getElementById('news-list');
+  newsList.textContent = 'Loading news...';
+
+  try {
+    const newsResponse = await fetch(`https://newsapi.org/v2/everything?q=${symbol}&sortBy=publishedAt&apiKey=YOUR_NEWSAPI_KEY`);
+    const newsData = await newsResponse.json();
+
+    if (newsData.status !== 'ok' || newsData.totalResults === 0) {
+      newsList.textContent = 'No related news found.';
+      return;
+    }
+
+    newsList.innerHTML = newsData.articles.slice(0, 5).map(article =>
+      `<article>
+         <a href="${article.url}" target="_blank" rel="noopener noreferrer">${article.title}</a>
+         <p>${new Date(article.publishedAt).toLocaleDateString()}</p>
+       </article>`
+    ).join('');
+  } catch {
+    newsList.textContent = 'Failed to load news.';
+  }
 }
