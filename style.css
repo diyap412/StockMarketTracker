@@ -17,20 +17,23 @@ header {
   justify-content: center;
   align-items: center;
   margin-top: 1rem;
-  max-width: 320px;
   margin-left: auto;
   margin-right: auto;
+  padding: 0.25rem;
+  max-width: 360px;
+  background-color: #f1f1f1;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .centered-search input {
   flex: 1;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1rem;
   font-size: 1rem;
-  border: 1px solid #ccc;
-  border-right: none;
-  border-radius: 5px 0 0 5px;
+  border: none;
+  border-radius: 8px 0 0 8px;
   outline: none;
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  height: 40px;
 }
 
 .centered-search input:focus {
@@ -40,12 +43,12 @@ header {
 
 .centered-search button {
   padding: 0 1rem;
-  font-size: 1.25rem;
+  font-size: 1rem;
   background-color: #3a475e;
   color: white;
-  border: 1px solid #ccc;
-  border-left: none;
-  border-radius: 0 5px 5px 0;
+  border: none;
+  border-radius: 0 8px 8px 0;
+  height: 40px;
   cursor: pointer;
   transition: background-color 0.2s ease;
   display: flex;
@@ -104,3 +107,4 @@ main {
 #news-list a:hover {
   text-decoration: underline;
 }
+
