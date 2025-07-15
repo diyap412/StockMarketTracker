@@ -1,7 +1,7 @@
 async function getStockData() {
   const symbol = document.getElementById("stock-symbol").value.toUpperCase().trim();
-  const apiKey = "demo"; // Replace with your actual Alpha Vantage API key
   const output = document.getElementById("stock-price");
+  const apiKey = "BNRIU890X44B58J8";
 
   if (!symbol) {
     output.innerText = "Please enter a stock symbol.";
@@ -15,12 +15,12 @@ async function getStockData() {
     const data = await response.json();
 
     if (data.Note) {
-      output.innerText = "API limit reached. Try again later.";
+      output.innerText = "API limit reached. Please wait and try again.";
       return;
     }
 
     if (!data["Time Series (Daily)"]) {
-      output.innerText = "Invalid stock symbol or no data available.";
+      output.innerText = "Stock not found. Please check the symbol.";
       return;
     }
 
@@ -30,8 +30,8 @@ async function getStockData() {
     const close = parseFloat(latestData["4. close"]).toFixed(2);
 
     output.innerText = `${symbol} closing price on ${latestDate}: $${close}`;
-  } catch (err) {
-    output.innerText = "Something went wrong. Please try again.";
-    console.error(err);
+  } catch (error) {
+    output.innerText = "Error fetching data. Try again.";
+    console.error(error);
   }
 }
