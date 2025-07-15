@@ -1,67 +1,90 @@
 body {
-  font-family: 'Space Grotesk', sans-serif;
-  background-color: #f4f6f8;
-  color: #1f2937;
   margin: 0;
-  padding: 0;
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
 }
 
 header {
-  background-color: #1e293b;
+  background-color: #1e1e2f;
   color: white;
-  padding: 1.5rem 2rem;
+  padding: 1.5rem;
   text-align: center;
 }
 
-header h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
 .centered-search {
-  display: inline-flex;
-  gap: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
 }
 
 .centered-search input {
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  border: none;
+  padding: 0.5rem;
   font-size: 1rem;
-  width: 220px;
-  max-width: 90vw;
+  width: 250px;
+  border: 1px solid #ccc;
+  border-radius: 5px 0 0 5px;
 }
 
 .centered-search button {
-  background-color: #3b82f6;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: #4caf50;
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  border-radius: 0 5px 5px 0;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 .centered-search button:hover {
-  background-color: #2563eb;
+  background-color: #45a049;
 }
 
-@media (max-width: 480px) {
-  header h1 {
-    font-size: 1.5rem;
-  }
-  
-  .centered-search {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .centered-search input, .centered-search button {
-    width: 100%;
-    max-width: 320px;
-  }
-  
-  .centered-search button {
-    margin-top: 0.5rem;
-  }
+main {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.stock-info {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.2rem;
+}
+
+.chart-container {
+  max-width: 100%;
+  margin: 0 auto 3rem auto;
+}
+
+#stockChart {
+  width: 100% !important;
+  height: auto !important;
+}
+
+.news-feed {
+  text-align: center;
+}
+
+.news-feed h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+#news-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+#news-list a {
+  text-decoration: none;
+  color: #1e88e5;
+  font-weight: 600;
+}
+
+#news-list a:hover {
+  text-decoration: underline;
 }
