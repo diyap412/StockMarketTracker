@@ -60,7 +60,7 @@ header h1 {
   border: none;
   border-radius: 20px;
   background-color: #f4f6f8;
-  color: white;
+  color: #1f2937; /* dark text for contrast */
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -68,7 +68,7 @@ header h1 {
 }
 
 .search-button:hover {
-  background-color: #f4f6f8;
+  background-color: #d9dde1; 
 }
 
 .search-button i {
