@@ -68,3 +68,42 @@ main {
   font-size: 1.2rem;
   text-align: center;
 }
+
+.chart-container {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-top: 2rem;
+}
+
+canvas {
+  width: 100% !important;
+  height: 300px !important;
+}
+
+.news-feed {
+  margin-top: 2rem;
+}
+
+.news-feed h2 {
+  margin-bottom: 1rem;
+}
+
+#news-list {
+  display: grid;
+  gap: 1rem;
+}
+
+#news-list div {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+}
+
+#news-list a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: bold;
+}
