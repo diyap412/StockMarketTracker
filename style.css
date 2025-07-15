@@ -75,6 +75,14 @@ header h1 {
   pointer-events: none;
 }
 
+.search-button img.search-icon {
+  width: 20px;   /* or size you want */
+  height: 20px;
+  object-fit: contain;
+  pointer-events: none; /* so clicks go to the button */  /* remove this chunk if it doesn't work!!! */
+  vertical-align: middle;
+}
+
 main {
   padding: 2rem;
   max-width: 900px;
