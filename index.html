@@ -12,10 +12,10 @@
 <body>
   <header>
     <h1>📈 Stock Market Tracker</h1>
-    <div class="centered-search">
+    <form class="centered-search" onsubmit="event.preventDefault(); getStockData();">
       <input type="text" id="stock-symbol" placeholder="Enter stock symbol (e.g., AAPL)" />
-      <button onclick="getStockData()"><i class="fas fa-search"></i></button>
-    </div>
+      <button type="submit"><i class="fas fa-search"></i></button>
+    </form>
   </header>
 
   <main>
