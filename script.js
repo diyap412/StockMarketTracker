@@ -1,4 +1,4 @@
-const API_KEY = 'YOUR_ALPHA_VANTAGE_API_KEY';
+const API_KEY = '2KA4N6X8QP8CT2NC';
 
 const stockInfoDiv = document.getElementById('stock-price');
 const newsList = document.getElementById('news-list');
