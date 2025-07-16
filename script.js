@@ -2,7 +2,44 @@ const API_KEY = '2KA4N6X8QP8CT2NC';
 
 const stockInfoDiv = document.getElementById('stock-price');
 const newsList = document.getElementById('news-list');
+const input = document.getElementById('stock-symbol');
+const suggestionsList = document.getElementById('suggestions');
 let stockChart;
+
+// Static suggestions (you can expand this list)
+const stockSymbols = [
+  "AAPL", "GOOGL", "MSFT", "AMZN", "TSLA",
+  "NFLX", "NVDA", "META", "BABA", "AMD",
+  "INTC", "CRM", "UBER", "PYPL", "DIS",
+  "BA", "KO", "NKE", "ORCL", "T"
+];
+
+// Handle input for suggestions
+input.addEventListener("input", function () {
+  const query = this.value.toUpperCase();
+  suggestionsList.innerHTML = "";
+
+  if (query.length === 0) return;
+
+  const matches = stockSymbols.filter(symbol => symbol.startsWith(query));
+
+  matches.forEach(symbol => {
+    const li = document.createElement("li");
+    li.textContent = symbol;
+    li.addEventListener("click", () => {
+      input.value = symbol;
+      suggestionsList.innerHTML = "";
+      getStockData(); // Calls full data fetch
+    });
+    suggestionsList.appendChild(li);
+  });
+});
+
+// Search button handler (used by search icon)
+function handleSearch() {
+  suggestionsList.innerHTML = "";
+  getStockData();
+}
 
 function getStockData() {
   const symbol = document.getElementById('stock-symbol').value.trim().toUpperCase();
