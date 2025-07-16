@@ -14,8 +14,9 @@
     <div class="search-container">
       <div class="search-bar">
         <input type="text" id="stock-symbol" placeholder="Enter stock symbol (e.g., AAPL)">
+        <ul id="suggestions"></ul>
       </div>
-      <button onclick="getStockData()" class="search-button">
+      <button onclick="handleSearch()" class="search-button">
         <img src="search-icon.png" alt="Search" class="search-icon" />
       </button>
     </div>
