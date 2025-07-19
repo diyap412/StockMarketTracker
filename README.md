@@ -54,7 +54,7 @@ const apiKey = "YOUR_API_KEY_HERE";
 
 ## 🙋‍♀️ Author
 
-Built by **[Diya Patel](https://github.com/yourusername)** — Computer Engineering @ UIC.
+Built by **[diyap412](https://github.com/yourusername)** — Computer Engineering @ UIC.
 
 ## 📄 License
 
