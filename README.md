@@ -7,16 +7,7 @@ A responsive web application that allows users to search and track real-time sto
 - 📊 Real-time stock price and volume updates  
 - 🔎 Search functionality with auto-suggestions  
 - 🧠 Clean, minimalist design using Chart.js  
-- 📰 Latest news headlines (optional: via API integration like Finnhub or Alpha Vantage)  
 - 📱 Mobile-responsive UI  
-
-## 🖥️ Demo
-
-Check out the live version here: [YourLiveLinkHere](https://your-site-link.com)
-
-## 🎥 Preview
-
-![Stock Market Tracker Screenshot](preview.png)
 
 ## ⚙️ Tech Stack
 
@@ -39,3 +30,37 @@ Check out the live version here: [YourLiveLinkHere](https://your-site-link.com)
 ```bash
 git clone https://github.com/yourusername/stock-market-tracker.git
 cd stock-market-tracker
+```
+
+2. Open `index.html` in your browser.
+
+3. To use the stock data API, get a free API key from:
+- [Alpha Vantage](https://www.alphavantage.co/support/#api-key)
+
+4. Insert your API key in `script.js`:
+```javascript
+const apiKey = "YOUR_API_KEY_HERE";
+```
+
+## 📦 File Structure
+
+```
+📁 stock-market-tracker/
+├── index.html
+├── style.css
+├── script.js
+├── README.md
+```
+
+## 🙋‍♀️ Author
+
+Built by **[Diya Patel](https://github.com/yourusername)** — Computer Engineering @ UIC.
+
+## 📄 License
+
+This project is licensed under the MIT License.  
+See `LICENSE` for more information.
+
+---
+
+🧠 *"Built to track the market, learn from the numbers, and stay informed."*
