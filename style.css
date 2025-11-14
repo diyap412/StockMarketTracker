@@ -161,3 +161,69 @@ canvas {
 #suggestions li:hover {
   background-color: #f1f5f9;
 }
+
+/* ---------- New section styles (match your existing cards) ---------- */
+.indicators-section,
+.prediction-section,
+.portfolio {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+  font-size: 1.0rem;
+}
+
+.indicators-section h2,
+.prediction-section h2,
+.portfolio h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+}
+
+#indicator-output p,
+#prediction-output,
+#portfolio-list li {
+  margin-bottom: 0.5rem;
+}
+
+.portfolio-controls {
+  margin-bottom: 0.75rem;
+}
+
+.btn {
+  background-color: #1e293b;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+#portfolio-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+#portfolio-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #f8fafc;
+  margin-bottom: 8px;
+  font-size: 0.98rem;
+}
+
+.remove-btn {
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
