@@ -14,6 +14,8 @@
     <div class="search-container">
       <div class="search-bar">
         <input type="text" id="stock-symbol" placeholder="Enter stock symbol (e.g., AAPL)">
+        <!-- suggestions dropdown (keeps your suggestion JS working) -->
+        <ul id="suggestions"></ul>
       </div>
       <button onclick="getStockData()" class="search-button">
         <img src="search-icon.png" alt="Search" class="search-icon" />
@@ -26,6 +28,29 @@
 
     <section class="chart-container">
       <canvas id="stockChart"></canvas>
+    </section>
+
+    <!-- Technical indicators (small section, same styling as others) -->
+    <section class="indicators-section">
+      <h2>Technical Indicators</h2>
+      <div id="indicator-output">
+        <!-- SMA / RSI / MACD will be injected here -->
+      </div>
+    </section>
+
+    <!-- Prediction -->
+    <section class="prediction-section">
+      <h2>Price Prediction</h2>
+      <div id="prediction-output"><!-- prediction text injected here --></div>
+    </section>
+
+    <!-- Portfolio tracker -->
+    <section class="portfolio">
+      <h2>Your Portfolio</h2>
+      <div class="portfolio-controls">
+        <button class="btn" onclick="addToPortfolio()">Add Current Stock</button>
+      </div>
+      <ul id="portfolio-list"></ul>
     </section>
 
     <section class="news-feed">
