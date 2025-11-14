@@ -1,145 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock Market Tracker</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f7f7f7;
-            padding: 20px;
-        }
-
-        #app {
-            max-width: 700px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 14px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-
-        #stock-info {
-            margin-top: 15px;
-            padding: 15px;
-            background: #f2f2f2;
-            border-radius: 12px;
-        }
-
-        #chart-container {
-            margin-top: 20px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stock Market Tracker</title>
+  <link rel="stylesheet" href="style.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
-
-<div id="app">
-    <h1>Stock Market Tracker</h1>
-
-    <input id="symbol-input" placeholder="Enter stock symbol (AAPL, TSLA, MSFT)" />
-
-    <button onclick="fetchStock()">Search</button>
-
-    <div id="stock-info"></div>
-
-    <div id="chart-container">
-        <canvas id="stockChart"></canvas>
+  <header>
+    <h1>📈 Stock Market Tracker</h1>
+    <div class="search-container">
+      <div class="search-bar">
+        <input type="text" id="stock-symbol" placeholder="Enter stock symbol (e.g., AAPL)">
+      </div>
+      <button onclick="getStockData()" class="search-button">
+        <img src="search-icon.png" alt="Search" class="search-icon" />
+      </button>
     </div>
-</div>
+  </header>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <main>
+    <section class="stock-info" id="stock-price"></section>
 
-<script>
-    let chart;
+    <section class="chart-container">
+      <canvas id="stockChart"></canvas>
+    </section>
 
-    // FORMAT DATE PROPERLY
-    function formatDate(dateString) {
-        const date = new Date(dateString);
-        return date.toLocaleDateString(undefined, {
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-        });
-    }
+    <section class="news-feed">
+      <h2>Related News</h2>
+      <div id="news-list"></div>
+    </section>
+  </main>
 
-    async function fetchStock() {
-        const symbol = document.getElementById("symbol-input").value.trim().toUpperCase();
-        if (!symbol) return;
-
-        const apiKey = "YOUR_API_KEY";
-
-        const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${apiKey}`;
-
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (!data["Time Series (Daily)"]) {
-            document.getElementById("stock-info").innerHTML = "Invalid stock symbol.";
-            return;
-        }
-
-        const timeSeries = data["Time Series (Daily)"];
-        const meta = data["Meta Data"];
-
-        // GET DATE + FORMAT IT
-        const lastRefreshed = meta["3. Last Refreshed"];
-        const formattedDate = formatDate(lastRefreshed);
-
-        // GET LATEST STOCK DATA
-        const latestDate = Object.keys(timeSeries)[0];
-        const latest = timeSeries[latestDate];
-        const price = latest["4. close"];
-
-        // Display info box above graph
-        document.getElementById("stock-info").innerHTML = `
-            <strong>${symbol}</strong><br>
-            Price: $${parseFloat(price).toFixed(2)} <br>
-            Change: -- (Daily % change optional) <br>
-            Last Updated: ${formattedDate}
-        `;
-
-        // Build graph values
-        const labels = Object.keys(timeSeries).reverse();
-        const values = labels.map(d => timeSeries[d]["4. close"]);
-
-        // Draw graph
-        const ctx = document.getElementById("stockChart").getContext("2d");
-
-        if (chart) chart.destroy();
-
-        chart = new Chart(ctx, {
-            type: "line",
-            data: {
-                labels,
-                datasets: [{
-                    label: `${symbol} Price`,
-                    data: values,
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: { beginAtZero: false }
-                }
-            }
-        });
-    }
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>
