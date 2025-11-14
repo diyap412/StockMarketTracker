@@ -6,7 +6,6 @@ const input = document.getElementById('stock-symbol');
 const suggestionsList = document.getElementById('suggestions');
 let stockChart;
 
-// you can add more symbols to expand the search
 const stockSymbols = [
   "AAPL", "GOOGL", "MSFT", "AMZN", "TSLA",
   "NFLX", "NVDA", "META", "BABA", "AMD",
@@ -14,7 +13,6 @@ const stockSymbols = [
   "BA", "KO", "NKE", "ORCL", "T"
 ];
 
-// Handle input for suggestions
 input.addEventListener("input", function () {
   const query = this.value.toUpperCase();
   suggestionsList.innerHTML = "";
@@ -29,13 +27,12 @@ input.addEventListener("input", function () {
     li.addEventListener("click", () => {
       input.value = symbol;
       suggestionsList.innerHTML = "";
-      getStockData(); // Calls full data fetch
+      getStockData();
     });
     suggestionsList.appendChild(li);
   });
 });
 
-// Search button handler (used by search icon)
 function handleSearch() {
   suggestionsList.innerHTML = "";
   getStockData();
@@ -49,6 +46,7 @@ function getStockData() {
   fetchStockNews(symbol);
 }
 
+// ------------------- PRICE + DATE FIX ------------------------
 async function fetchStockPrice(symbol) {
   const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`;
   try {
@@ -76,7 +74,11 @@ async function fetchStockPrice(symbol) {
     }
 
     const change = quote["10. change percent"];
-    const lastDay = quote["07. latest trading day"];
+
+    // ------------------- FIXED DATE FORMAT -------------------
+    let lastDayRaw = quote["07. latest trading day"];   // yyyy-mm-dd
+    let parts = lastDayRaw.split("-");
+    let lastDay = `${parts[1]}-${parts[2]}-${parts[0]}`; // mm-dd-yyyy
 
     stockInfoDiv.innerHTML = `
       <h2>${symbol}</h2>
@@ -90,6 +92,7 @@ async function fetchStockPrice(symbol) {
   }
 }
 
+// ------------------- STOCK HISTORY GRAPH ------------------------
 async function fetchStockHistory(symbol) {
   const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${API_KEY}`;
   const res = await fetch(url);
@@ -97,7 +100,6 @@ async function fetchStockHistory(symbol) {
   const series = data["Time Series (Daily)"];
   if (!series) return;
 
-  // ✅ FIXED DATE FORMAT (MM-DD-YYYY)
   const dates = Object.keys(series)
     .slice(0, 7)
     .reverse()
