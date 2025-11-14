@@ -6,7 +6,7 @@ const input = document.getElementById('stock-symbol');
 const suggestionsList = document.getElementById('suggestions');
 let stockChart;
 
-// Static suggestions (you can expand this list)
+// you can add more symbols to expand the search
 const stockSymbols = [
   "AAPL", "GOOGL", "MSFT", "AMZN", "TSLA",
   "NFLX", "NVDA", "META", "BABA", "AMD",
@@ -97,8 +97,19 @@ async function fetchStockHistory(symbol) {
   const series = data["Time Series (Daily)"];
   if (!series) return;
 
-  const dates = Object.keys(series).slice(0, 7).reverse();
-  const prices = dates.map(date => parseFloat(series[date]["4. close"]));
+  // ✅ FIXED DATE FORMAT (MM-DD-YYYY)
+  const dates = Object.keys(series)
+    .slice(0, 7)
+    .reverse()
+    .map(date => {
+      const parts = date.split("-");
+      return parts[1] + "-" + parts[2] + "-" + parts[0];
+    });
+
+  const prices = Object.keys(series)
+    .slice(0, 7)
+    .reverse()
+    .map(date => parseFloat(series[date]["4. close"]));
 
   if (stockChart) stockChart.destroy();
 
